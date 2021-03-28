@@ -1,0 +1,48 @@
+program->type_name program1|empty
+program1->ID program2
+program2->( parameter_list ) program3|; program|, id id_list1 ; program|[ expression ] program4
+program3->; func_list|{ data_decls statements } func_list
+program4->; program|, id id_list1 ; program
+func_list->empty|func func_list
+func->func_decl func1
+func1->;|{ data_decls statements }
+func_decl->type_name ID ( parameter_list )
+type_name->int|void|binary|decimal
+parameter_list->empty|void parameter_list1|int ID non_empty_list1|binary ID non_empty_list1|decimal ID non_empty_list1
+parameter_list1->empty|ID non_empty_list1
+non_empty_list->void ID non_empty_list1|int ID non_empty_list1|binary ID non_empty_list1|decimal ID non_empty_list1
+non_empty_list1->, type_name ID non_empty_list1|empty
+data_decls->empty|type_name id_list ; data_decls
+id_list->id id_list1
+id_list1->, id id_list1|empty
+id->ID id1
+id1->empty|[ expression ]
+block_statements->{ statements }
+statements->empty|statement statements
+statement->ID statement1|if_statement|while_statement|return_statement
+statement1->assignment1|( expr_list ) ;
+assignment->ID assignment1
+assignment1->[ expression ] = expression ;|= expression ;
+func_call->ID ( expr_list ) ;
+expr_list->empty|non_empty_expr_list
+non_empty_expr_list->expression non_empty_expr_list1
+non_empty_expr_list1->, expression non_empty_expr_list1|empty
+if_statement->if ( condition_expression ) block_statements
+condition_expression->condition condition_expression1
+condition_expression1->empty|condition_op condition
+condition_op->&&|||
+condition->expression comparison_op expression
+comparison_op->==|!=|>|>=|<=|<
+while_statement->while ( condition_expression ) block_statements
+return_statement->return return_statement1
+return_statement1->expression ;|;
+break_statement->break ;
+continue_statement->continue ;
+expression->term expression1
+term->factor term1
+term1->mulop factor term1|empty
+mulop->*|/
+factor->ID factor1|number|- number|( expression )
+factor1->empty|[ expression ]|( expr_list )
+expression1->addop term expression1|empty
+addop->+|-
